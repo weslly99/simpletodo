@@ -31,7 +31,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/QLdBAB2.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/QLdBAB2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 Video recoder with [SimpleScreenRecorder](http://www.maartenbaert.be/simplescreenrecorder/).
 GIF created with [Ffmpeg](https://ffmpeg.org/).
 
