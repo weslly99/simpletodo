@@ -19,7 +19,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(int id, String taskName, boolean status, boolean archived, Calendar timestamp, String taskDescription, String priority) {
+    public Task(int id, String taskName, String taskDescription, boolean status, boolean archived, Calendar timestamp, String priority) {
         this.id = id;
         this.taskName = taskName;
         this.status = status;
@@ -83,5 +83,18 @@ public class Task {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", taskName='" + taskName + '\'' +
+                ", status=" + status +
+                ", archived=" + archived +
+                ", timestamp=" + timestamp +
+                ", taskDescription='" + taskDescription + '\'' +
+                ", priority='" + priority + '\'' +
+                '}';
     }
 }

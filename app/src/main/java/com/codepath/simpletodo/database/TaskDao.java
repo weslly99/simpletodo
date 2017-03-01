@@ -2,14 +2,15 @@ package com.codepath.simpletodo.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.codepath.simpletodo.Constants;
 import com.codepath.simpletodo.database.Scheme.TableTask;
 import com.codepath.simpletodo.model.Task;
+import com.codepath.simpletodo.util.Formatter;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,6 @@ import java.util.List;
  */
 
 public class TaskDao {
-    private final String[] priorits = {Constants.PRIORITY_LOW, Constants.PRIORITY_MEDIUM, Constants.PRIORITY_HIGHT};
     private DatabaseHelper database;
 
     public TaskDao(Context context) {
@@ -63,67 +63,71 @@ public class TaskDao {
 
 
     public Task getTask(int id) {
-        SQLiteDatabase reader = database.getReadableDatabase();
+        CursorTaskWrapper wrapper = queryTask(TableTask.Cols.ID+"= ?", new String[]{String.valueOf(id)});
+        Task task = null;
+        try {
+            wrapper.moveToFirst();
+            task = wrapper.getTask();
+        } finally {
+            wrapper.close();
+        }
 
-
-        return null;
+        return task;
     }
 
     public List<Task> getAllTask() {
-        return null;
+        return getList(null, null);
     }
 
     public List<Task> getAllTaskArchived() {
-        return null;
+
+        return getList(TableTask.Cols.ARCHIVED + "= ?",
+                new String[]{String.valueOf(1)});
     }
 
     public List<Task> getAllTaskUnarchived() {
-        return null;
+        return getList(TableTask.Cols.ARCHIVED + "= ?",
+                new String[]{String.valueOf(0)});
     }
 
     public List<Task> getAllTaskofDate(long date) {
-        return null;
+        return getList(TableTask.Cols.TIMESTAMP + "= ?",
+                new String[]{String.valueOf(date)});
     }
 
+
+    private List<Task> getList(String whereClause, String[] whereArgs) {
+        CursorTaskWrapper wrapper = queryTask(whereClause, whereArgs);
+        List<Task> tasks = new ArrayList<>();
+        try {
+            wrapper.moveToFirst();
+            while (!wrapper.isAfterLast()) {
+                tasks.add(wrapper.getTask());
+                wrapper.moveToNext();
+            }
+        } finally {
+            wrapper.close();
+        }
+        return tasks;
+    }
+
+    private CursorTaskWrapper queryTask(String whereClause, String[] whereArgs) {
+        SQLiteDatabase reader = database.getReadableDatabase();
+        Cursor cursor = reader.query(TableTask.NAME, null, whereClause, whereArgs, null, null, null,null);
+        return new CursorTaskWrapper(cursor);
+    }
 
     public ContentValues wraperTask(Task task) {
         ContentValues content = new ContentValues();
         content.put(TableTask.Cols.ID, task.getId());
         content.put(TableTask.Cols.TASK_NAME, task.getTaskName());
         content.put(TableTask.Cols.TASK_DESCRIPTION, task.getId());
-        content.put(TableTask.Cols.ARCHIVED, handleBooleans(task.isArchived()));
-        content.put(TableTask.Cols.STATUS, handleBooleans(task.isStatus()));
-        content.put(TableTask.Cols.PRIORITY, handlePrioritys(task.getPriority()));
-        content.put(TableTask.Cols.TIMESTAMP, handleDates(task.getTimestamp().getTime()));
+        content.put(TableTask.Cols.ARCHIVED, Formatter.handleBooleans(task.isArchived()));
+        content.put(TableTask.Cols.STATUS, Formatter.handleBooleans(task.isStatus()));
+        content.put(TableTask.Cols.PRIORITY, Formatter.handlePrioritys(task.getPriority()));
+        content.put(TableTask.Cols.TIMESTAMP, Formatter.handleDates(task.getTimestamp().getTime()));
         return content;
     }
 
-    public boolean handleBooleans(int val) {
-        return val == 1 ? true : false;
-    }
 
-    public int handleBooleans(boolean val) {
-        return val ? 1 : 0;
-    }
-
-    public String handlePrioritys(int prior) {
-        return priorits[prior];
-    }
-
-    public int handlePrioritys(String prior) {
-        for (int i = 0; i < priorits.length; i++) {
-            if (prior.equals(priorits[i])) {
-                return i;
-            }
-        }
-        return 1; //default medium
-    }
-
-    public long handleDates(Date date) {
-        return date.getTime();
-    }
-
-    public Date handleDates(long date) {
-        return new Date(date);
-    }
 }

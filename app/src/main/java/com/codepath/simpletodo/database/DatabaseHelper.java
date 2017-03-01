@@ -30,14 +30,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String create_table_task = "CREATE TABLE "+ TableTask.NAME +" ("+
-                    TableTask.Cols.ID+"INTEGER PRIMARY KEY"+
-                    TableTask.Cols.TASK_NAME +"TEXT "+
-                    TableTask.Cols.TASK_DESCRIPTION+" TEXT"+
-                    TableTask.Cols.ARCHIVED +"INTEGER"+
-                    TableTask.Cols.STATUS+"INTEGER"+
-                    TableTask.Cols.PRIORITY +"INTEGER"+
-                    TableTask.Cols.TIMESTAMP+"INTEGER"+
+        String create_table_task = "CREATE TABLE "+ TableTask.NAME +" ( "+
+                    TableTask.Cols.ID+" INTEGER PRIMARY KEY, "+
+                    TableTask.Cols.TASK_NAME +" TEXT, "+
+                    TableTask.Cols.TASK_DESCRIPTION+" TEXT, "+
+                    TableTask.Cols.ARCHIVED +" INTEGER, "+
+                    TableTask.Cols.STATUS+" INTEGER, "+
+                    TableTask.Cols.PRIORITY +" INTEGER, "+
+                    TableTask.Cols.TIMESTAMP+" INTEGER " +
                 ")";
         db.execSQL(create_table_task);
 

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String LOG = MainActivity.class.getName();
     private ListView listItens;
     private ArrayAdapter<String> itensAdapter;
     private List<String> itens;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         itensAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itens);
         listItens.setAdapter(itensAdapter);
         setupListListener();
+        
 
     }
 
@@ -101,4 +102,6 @@ public class MainActivity extends AppCompatActivity {
             writerItens();
         }
     }
+
+
 }
