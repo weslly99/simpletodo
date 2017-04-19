@@ -38,7 +38,7 @@ public class CursorTaskWrapper extends CursorWrapper {
         task.setTaskDescription(taskDescription);
         task.setArchived(Formatter.handleBooleans(taskArchived));
         task.setStatus(Formatter.handleBooleans(taskStatus));
-        task.setPriority(Formatter.handlePrioritys(taskPriority));
+        task.setPriority(taskPriority);
 
         Calendar timestamp = Calendar.getInstance();
         timestamp.setTime(Formatter.handleDates(taskDate));

@@ -63,7 +63,7 @@ public class TaskDao {
 
 
     public Task getTask(int id) {
-        CursorTaskWrapper wrapper = queryTask(TableTask.Cols.ID+"= ?", new String[]{String.valueOf(id)});
+        CursorTaskWrapper wrapper = queryTask(TableTask.Cols.ID + " = ?", new String[]{String.valueOf(id)});
         Task task = null;
         try {
             wrapper.moveToFirst();
@@ -81,7 +81,7 @@ public class TaskDao {
 
     public List<Task> getAllTaskArchived() {
 
-        return getList(TableTask.Cols.ARCHIVED + "= ?",
+        return getList(TableTask.Cols.ARCHIVED + " = ?",
                 new String[]{String.valueOf(1)});
     }
 
@@ -113,7 +113,7 @@ public class TaskDao {
 
     private CursorTaskWrapper queryTask(String whereClause, String[] whereArgs) {
         SQLiteDatabase reader = database.getReadableDatabase();
-        Cursor cursor = reader.query(TableTask.NAME, null, whereClause, whereArgs, null, null, null,null);
+        Cursor cursor = reader.query(TableTask.NAME, null, whereClause, whereArgs, null, null, null, null);
         return new CursorTaskWrapper(cursor);
     }
 
@@ -124,8 +124,9 @@ public class TaskDao {
         content.put(TableTask.Cols.TASK_DESCRIPTION, task.getId());
         content.put(TableTask.Cols.ARCHIVED, Formatter.handleBooleans(task.isArchived()));
         content.put(TableTask.Cols.STATUS, Formatter.handleBooleans(task.isStatus()));
-        content.put(TableTask.Cols.PRIORITY, Formatter.handlePrioritys(task.getPriority()));
-        content.put(TableTask.Cols.TIMESTAMP, Formatter.handleDates(task.getTimestamp().getTime()));
+        content.put(TableTask.Cols.PRIORITY,task.getPriority());
+        if (task.getTimestamp() != null)
+            content.put(TableTask.Cols.TIMESTAMP, Formatter.handleDates(task.getTimestamp().getTime()));
         return content;
     }
 

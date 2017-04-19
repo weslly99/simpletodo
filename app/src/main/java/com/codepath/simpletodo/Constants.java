@@ -9,7 +9,7 @@ public interface Constants {
     String EXTRA_POSITION = "extra_position";
     int REQUEST_EDIT = 0;
 
-    String PRIORITY_HIGHT = "HIGHT";
-    String PRIORITY_MEDIUM = "MEDIUM";
-    String PRIORITY_LOW = "LOW";
+    int PRIORITY_HIGHT = 2;
+    int PRIORITY_MEDIUM = 1;
+    int PRIORITY_LOW = 0;
 }

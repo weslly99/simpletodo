@@ -1,6 +1,7 @@
 package com.codepath.simpletodo.model;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by weslly on 01/03/17.
@@ -14,12 +15,20 @@ public class Task {
     private boolean archived;
     private Calendar timestamp;
     private String taskDescription;
-    private String priority;
+    private int priority;
 
     public Task() {
     }
 
-    public Task(int id, String taskName, String taskDescription, boolean status, boolean archived, Calendar timestamp, String priority) {
+    public Task(String taskName) {
+        this.taskName = taskName;
+        Date date = new Date(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        this.timestamp = calendar;
+    }
+
+    public Task(int id, String taskName, String taskDescription, boolean status, boolean archived, Calendar timestamp, int priority) {
         this.id = id;
         this.taskName = taskName;
         this.status = status;
@@ -77,11 +86,11 @@ public class Task {
         this.taskDescription = taskDescription;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
